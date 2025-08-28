@@ -52,6 +52,28 @@ elif "definición de" in cmd:
         get_word_definition(palabra)
     else:
         print("No se especificó una palabra para definir.")
+elif "cuéntame un chiste" in cmd:
+    from voz_comandos import get_joke
+    chiste = get_joke()
+    os.system("cls" if os.name == "nt" else "clear")
+
+    if chiste:
+        print("Aquí tienes un chiste:")
+        print(chiste)
+    else:
+        print("No se pudo obtener un chiste en este momento.")
+elif "agregar" in cmd:
+    from voz_archivo import agregar_producto
+    palabra = cmd.split("agregar")[-1].strip().split( ).translate(str.maketrans('', '', string.punctuation))
+    if palabra:
+        agregar_producto(palabra)
+elif "jarvis abre " in cmd:
+    from voz_comandos import jarvis
+    app_name = cmd.split("jarvis abre")[-1].strip().translate(str.maketrans('', '', string.punctuation))
+    if app_name:
+        jarvis(app_name)
+    else:
+        print("No se especificó una aplicación para abrir.")
 else:
     print("Comando no reconocido.")
 

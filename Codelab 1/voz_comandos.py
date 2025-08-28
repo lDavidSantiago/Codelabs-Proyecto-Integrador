@@ -67,3 +67,120 @@ def filtered_data(data):
                 print(f"Significado #{other_meaning["meaning_number"]}: {other_meaning['raw']}")
                 counter += 1
 
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║ Función: get_joke                                                ║
+# ║                                                                  ║
+# ║ Esta función obtiene un chiste desde la API JokeAPI.             ║
+# ║ - Realiza una petición HTTP a la API con idioma español.         ║
+# ║ - Si la respuesta es 404, muestra un error indicando que no hay  ║
+# ║   chiste disponible.                                             ║
+# ║ - Si ocurre otro error, muestra el código de estado recibido.    ║
+# ║ - En caso exitoso, retorna el texto del chiste.                  ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+def get_joke():
+    url = "https://v2.jokeapi.dev/joke/Any?lang=es&format=txt"
+    response = requests.get(url)
+    if response.status_code == 404:
+        print("Hubo un error al obtener el chiste.")
+        return None
+    if response.status_code != 200:
+        print(f"Error: {response.status_code}")
+        return None
+    return response.text
+
+
+def jarvis(app_name):
+    import platform
+    import subprocess
+    import os
+    
+    sistema = platform.system().lower()
+    app_name = app_name.lower().strip()
+    
+    if sistema == 'windows':
+        #Nombre de apps del sistema 
+        apps_sistema = {
+            'notepad': 'notepad',
+            'bloc de notas': 'notepad',
+            'calculadora': 'calc',
+            'paint': 'mspaint',
+            'explorador': 'explorer',
+            'explorador de archivos': 'explorer'
+        }
+        #Rutas comunes de apps instaladas
+        apps_instaladas = {
+            'chrome': [
+                r'C:\Program Files\Google\Chrome\Application\chrome.exe',
+                r'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+            ],
+            'firefox': [
+                r'C:\Program Files\Mozilla Firefox\firefox.exe',
+                r'C:\Program Files (x86)\Mozilla Firefox\firefox.exe'
+            ],
+            'edge': ['msedge'],
+            'vscode': [
+                f'C:\\Users\\{os.getenv("USERNAME")}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe',
+                r'C:\Program Files\Microsoft VS Code\Code.exe'
+            ],
+            'visual studio code': [
+                f'C:\\Users\\{os.getenv("USERNAME")}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe',
+                r'C:\Program Files\Microsoft VS Code\Code.exe'
+            ],
+            'word': ['winword'],
+            'excel': ['excel'],
+            'powerpoint': ['powerpnt'],
+            'spotify': [
+                f'C:\\Users\\{os.getenv("USERNAME")}\\AppData\\Roaming\\Spotify\\Spotify.exe'
+            ],
+            'discord': [
+                f'C:\\Users\\{os.getenv("USERNAME")}\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe'
+            ],
+            'whatsapp': [
+                f'C:\\Users\\{os.getenv("USERNAME")}\\AppData\\Local\\WhatsApp\\WhatsApp.exe'
+            ],
+            'telegram': [
+                f'C:\\Users\\{os.getenv("USERNAME")}\\AppData\\Roaming\\Telegram Desktop\\Telegram.exe'
+            ]
+            ,
+            'brave': [
+            f'C:\\Users\\{os.getenv("USERNAME")}\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe',
+            r'C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe',
+            r'C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe'
+        ]
+        }
+        
+        try:
+            if app_name in apps_sistema:
+                subprocess.Popen(apps_sistema[app_name], shell=True)
+                return f"Abriendo {app_name}"
+            
+            elif app_name in apps_instaladas:
+                rutas = apps_instaladas[app_name]
+                
+                for ruta in rutas:
+                    try:
+                        if os.path.exists(ruta.split(' --')[0]):  
+                            if '--processStart' in ruta:
+                                os.system(f'"{ruta}"')
+                            else:
+                                subprocess.Popen([ruta], shell=True)
+                            return f"Abriendo {app_name}"
+                    except:
+                        continue
+                
+                try:
+                    subprocess.Popen(rutas[0].split('\\')[-1].split('.exe')[0], shell=True)
+                    return f"Abriendo {app_name}"
+                except:
+                    return f"No encontré {app_name} instalado"
+            
+            else:
+                return f"No conozco la aplicación {app_name}"
+                
+        except Exception as e:
+            return f"Error al abrir {app_name}"
+    
+    else:
+        return "Solo funciona en Windows por ahora"
+    

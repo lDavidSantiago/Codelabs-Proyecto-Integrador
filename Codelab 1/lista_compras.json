@@ -1,0 +1,12 @@
+{
+  "productos": [
+    {
+      "nombre": "Leche",
+      "cantidad": 2,
+      "categoria": "Lácteos",
+      "fecha_agregado": "2025-08-28T14:17:04.438131",
+      "comprado": false
+    }
+  ],
+  "fecha_creacion": "2025-08-28T14:17:04.438096"
+}
