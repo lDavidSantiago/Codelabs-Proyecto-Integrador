@@ -161,3 +161,5 @@ print("\nPipeline guardado en pipeline_spam.joblib")
 #    Ejemplo de cómo cargar y predecir directamente sobre un texto nuevo.
 loaded = joblib.load("pipeline_spam.joblib")
 print("Test carga:", loaded.predict(["Ganaste un iphone"])[0])  # 1=spam, 0=legítimo
+plt.savefig("curva_precision_recall.png")
+print("Curva guardada en curva_precision_recall.png")
